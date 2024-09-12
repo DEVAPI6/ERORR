@@ -1,5 +1,7 @@
 {
   "open": "ok",
-  "text": "{C}      مطمعن باشید در چنل تلگرامی ما عضو هستید!» » » {R}@IM_Royd ",
-  "guidss": ["c0BxaVL0ba75e0d255f2d8619aed0433"]
+  "text": "{C}Join our Telegram channel{M}@IM_ROYD\\n{G}سورسهای بیشتر در تلگرام @Im_Royd{NC}",
+  "guidss": [
+    "noting"
+  ]
 }
