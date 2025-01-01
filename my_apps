@@ -12,6 +12,11 @@
       "status": "OK",
       "contact": "https://t.me/MeAmiRak/248",
       "guid": "https://t.me/MeAmiRak"
+    },
+    "RUBINO_CHECK": {
+      "status": "OK",
+      "follow": "ok",
+      "contact": "https://t.me/IM_ROYD"
     }
   }
 }
