@@ -1,1 +1,17 @@
-{"ALL":"OK","APPS":{"SEEN":"OK","CHECKRUBINO":"OK","VIEWSTORY":{"status":"OK","text":"ViewStory","follow":"idme"},"ANTI_LOG":{"status":"OK","contact":"https://t.me/MeAmiRak/248","guid":"https://t.me/MeAmiRak"}}}
+{
+  "ALL": "OK",
+  "APPS": {
+    "SEEN": "OK",
+    "CHECKRUBINO": "OK",
+    "VIEWSTORY": {
+      "status": "OK",
+      "text": "ViewStory",
+      "follow": "idme"
+    },
+    "ANTI_LOG": {
+      "status": "OK",
+      "contact": "https://t.me/MeAmiRak/248",
+      "guid": "https://t.me/MeAmiRak"
+    }
+  }
+}
